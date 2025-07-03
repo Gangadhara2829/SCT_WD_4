@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Todo App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="navbar">
+    <div class="logo">TaskMaster Pro</div>
+    <div class="nav-items">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="analytics.html">Analytics</a>
+      <a href="settings.html">Settings</a>
+    </div>
+  </div>
+
+  <main class="dashboard">
+    <h2>Welcome to TaskMaster Pro</h2>
+    <p>Manage your tasks efficiently with filters, priorities, reminders, and analytics.</p>
+
+    <section class="task-input">
+      <input type="text" id="taskTitle" placeholder="Task Title" />
+      <input type="datetime-local" id="taskDateTime" />
+      <label><input type="checkbox" id="taskReminder" /> Set Reminder</label>
+      <button onclick="addTask()">Add Task</button>
+    </section>
+
+    <section class="task-list" id="taskList"></section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 TaskMaster Pro. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+
+    function addTask() {
+      const title = document.getElementById("taskTitle").value;
+      const dateTime = document.getElementById("taskDateTime").value;
+      const reminder = document.getElementById("taskReminder").checked;
+
+      if (!title || !dateTime) return alert("Please fill in all fields");
+
+      const task = {
+        id: Date.now(),
+        title,
+        dateTime,
+        completed: false,
+        reminder
+      };
+      tasks.push(task);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      if (reminder) scheduleReminder(task);
+      renderTasks();
+    }
+
+    function scheduleReminder(task) {
+      const time = new Date(task.dateTime).getTime() - Date.now();
+      if (time > 0) {
+        setTimeout(() => {
+          alert(`⏰ Reminder: ${task.title}`);
+        }, time);
+      }
+    }
+
+    function toggleComplete(id) {
+      const task = tasks.find(t => t.id === id);
+      task.completed = !task.completed;
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const container = document.getElementById("taskList");
+      container.innerHTML = "";
+      tasks.forEach(task => {
+        const div = document.createElement("div");
+        div.className = "task-card" + (task.completed ? " completed" : "");
+        div.innerHTML = `
+          <h4>${task.title}</h4>
+          <p>${new Date(task.dateTime).toLocaleString()}</p>
+          <p>${task.reminder ? "🔔 Reminder On" : ""}</p>
+          <button onclick="editTask(${task.id})">Edit</button>
+          <button onclick="deleteTask(${task.id})">Delete</button>
+          <button onclick="toggleComplete(${task.id})">${task.completed ? "Mark Incomplete" : "Mark Complete"}</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function editTask(id) {
+      const task = tasks.find(t => t.id === id);
+      const newTitle = prompt("Edit Task Title", task.title);
+      const newDateTime = prompt("Edit Date & Time", task.dateTime);
+      const newReminder = confirm("Set Reminder?");
+      if (newTitle && newDateTime) {
+        task.title = newTitle;
+        task.dateTime = newDateTime;
+        task.reminder = newReminder;
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        if (newReminder) scheduleReminder(task);
+        renderTasks();
+      }
+    }
+
+    function deleteTask(id) {
+      tasks = tasks.filter(t => t.id !== id);
+      localStorage.setItem('tasks', JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    window.onload = () => {
+      tasks.forEach(task => {
+        if (task.reminder) scheduleReminder(task);
+      });
+      renderTasks();
+    };
+  </script>
+</body>
+</html>

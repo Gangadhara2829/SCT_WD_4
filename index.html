@@ -1,22 +1,55 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>To-Do Web App</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Advanced Todo App</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
-    <h1>📝 To-Do List</h1>
-    <form id="task-form">
-      <input type="text" id="task-input" placeholder="Add a new task..." required>
-      <input type="datetime-local" id="task-date">
-      <button type="submit">Add Task</button>
-    </form>
-
-    <ul id="task-list"></ul>
+  <div class="navbar">
+    <div class="logo">TaskMaster Pro</div>
+    <div class="nav-items">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="analytics.html">Analytics</a>
+      <a href="settings.html">Settings</a>
+    </div>
   </div>
 
-  <script src="script.js"></script>
+  <main class="dashboard">
+    <h2>Welcome to TaskMaster Pro</h2>
+    <p>Manage your tasks efficiently with filters, priorities, reminders, and analytics.</p>
+
+    <section class="cards">
+      <div class="card">
+        <h3>My Tasks</h3>
+        <p>View and manage all your tasks.</p>
+        <a href="tasks.html" class="btn">View Tasks</a>
+      </div>
+
+      <div class="card">
+        <h3>Reminders</h3>
+        <p>Set and manage task reminders.</p>
+        <a href="reminders.html" class="btn">Manage Reminders</a>
+      </div>
+
+      <div class="card">
+        <h3>Analytics</h3>
+        <p>Visualize your productivity and task trends.</p>
+        <a href="analytics.html" class="btn">View Analytics</a>
+      </div>
+
+      <div class="card">
+        <h3>Settings</h3>
+        <p>Customize your app experience.</p>
+        <a href="settings.html" class="btn">Settings</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 TaskMaster Pro. All rights reserved.</p>
+  </footer>
 </body>
 </html>
