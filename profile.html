@@ -2,19 +2,70 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Profile | TaskMaster Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css" />
+
 </head>
 <body>
   <div class="navbar">
-    <div class="logo">TaskMaster Pro</div>
+    <div class="logo">Task Manager</div>
     <div class="nav-items">
       <a href="index.html">Home</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="analytics.html">Analytics</a>
+      <a href="settings.html">Settings</a>
     </div>
   </div>
+
   <main class="dashboard">
-    <h2>User Profile</h2>
-    <p>Edit your details and preferences.</p>
+    <h2>👤 Profile Overview</h2>
+
+    <div class="profile-container">
+      <div class="profile-card">
+        <img src="Gangadhara (1).png" alt="User" class="profile-image" />
+        <h3 id="userName">Gangadhara</h3>
+        <p id="userEmail">aryagangadhar09@gmail.com</p>
+        <p>📅 Joined: <span id="joinDate">July 2025</span></p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <h4>Total Tasks</h4>
+          <p id="totalTasks">0</p>
+        </div>
+        <div class="stat-card completed">
+          <h4>Completed</h4>
+          <p id="completedTasks">0</p>
+        </div>
+        <div class="stat-card pending">
+          <h4>Pending</h4>
+          <p id="pendingTasks">0</p>
+        </div>
+      </div>
+    </div>
   </main>
+
+  <footer>
+    <p>&copy; 2025 TaskMaster Pro. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    document.getElementById("totalTasks").textContent = tasks.length;
+    document.getElementById("completedTasks").textContent = tasks.filter(t => t.completed).length;
+    document.getElementById("pendingTasks").textContent = tasks.filter(t => !t.completed).length;
+
+    // Optionally load user data if stored
+    const userName = localStorage.getItem("userName") || "Gangadhara";
+    const userEmail = localStorage.getItem("userEmail") || "aryagangadhar09@gmail.com";
+    const joinDate = localStorage.getItem("joinDate") || "July 2025";
+
+    document.getElementById("userName").textContent = userName;
+    document.getElementById("userEmail").textContent = userEmail;
+    document.getElementById("joinDate").textContent = joinDate;
+  </script>
 </body>
 </html>

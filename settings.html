@@ -2,19 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Settings | TaskMaster Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="navbar">
-    <div class="logo">TaskMaster Pro</div>
+    <div class="logo">Task Manager</div>
     <div class="nav-items">
       <a href="index.html">Home</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="profile.html">Profile</a>
+      <a href="analytics.html">Analytics</a>
     </div>
   </div>
+
   <main class="dashboard">
-    <h2>App Settings</h2>
-    <p>Configure notification, theme and account options.</p>
+    <h2>⚙️ Settings</h2>
+    <div class="settings-container">
+      <div class="settings-section">
+        <h4>🌙 Theme</h4>
+        <label class="toggle-switch">
+          <input type="checkbox" id="darkModeToggle">
+          <span class="slider"></span>
+        </label>
+        <span id="modeLabel">Light Mode</span>
+      </div>
+
+      <div class="settings-section">
+        <h4>👤 Profile Info</h4>
+        <input type="text" id="nameInput" placeholder="Your Name">
+        <input type="email" id="emailInput" placeholder="Your Email">
+        <button onclick="saveProfile()">Save</button>
+      </div>
+
+      <div class="settings-section">
+        <h4>🗑️ Task Options</h4>
+        <button onclick="clearTasks()" class="danger-btn">Clear All Tasks</button>
+      </div>
+    </div>
   </main>
+
+  <footer>
+    <p>&copy; 2025 TaskMaster Pro. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    const modeLabel = document.getElementById("modeLabel");
+
+    const currentTheme = localStorage.getItem("theme");
+    if (currentTheme === "dark") {
+      document.body.classList.add("dark");
+      darkModeToggle.checked = true;
+      modeLabel.textContent = "Dark Mode";
+    }
+
+    darkModeToggle.addEventListener("change", () => {
+      if (darkModeToggle.checked) {
+        document.body.classList.add("dark");
+        localStorage.setItem("theme", "dark");
+        modeLabel.textContent = "Dark Mode";
+      } else {
+        document.body.classList.remove("dark");
+        localStorage.setItem("theme", "light");
+        modeLabel.textContent = "Light Mode";
+      }
+    });
+
+    document.getElementById("nameInput").value = localStorage.getItem("userName") || "";
+    document.getElementById("emailInput").value = localStorage.getItem("userEmail") || "";
+
+    function saveProfile() {
+      const name = document.getElementById("nameInput").value;
+      const email = document.getElementById("emailInput").value;
+      localStorage.setItem("userName", name);
+      localStorage.setItem("userEmail", email);
+      alert("Profile updated!");
+    }
+
+    function clearTasks() {
+      if (confirm("Are you sure you want to delete all tasks?")) {
+        localStorage.removeItem("tasks");
+        alert("All tasks deleted!");
+      }
+    }
+  </script>
 </body>
 </html>

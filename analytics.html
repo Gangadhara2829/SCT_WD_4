@@ -2,19 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Analytics | TaskMaster Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task Tracker</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="navbar">
-    <div class="logo">TaskMaster Pro</div>
+  <nav class="navbar">
+    <div class="logo">Task Manager</div>
     <div class="nav-items">
       <a href="index.html">Home</a>
+      <a href="tasks.html">Tasks</a>
+      <a href="profile.html">Profile</a>
+      <a href="settings.html">Settings</a>
+      <a href="analytics.html" style="color: #38bdf8;">Analytics</a>
     </div>
-  </div>
-  <main class="dashboard">
-    <h2>Analytics Dashboard</h2>
-    <p>Graphs and charts will appear here.</p>
-  </main>
+  </nav>
+
+  <section class="dashboard">
+    <h2 style="text-align:center; margin-bottom: 2rem;">Analytics Overview</h2>
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <h4>Total Tasks</h4>
+        <p id="totalTasks">0</p>
+      </div>
+      <div class="stat-card completed">
+        <h4>Completed</h4>
+        <p id="completedTasks">0</p>
+      </div>
+      <div class="stat-card pending">
+        <h4>Pending</h4>
+        <p id="pendingTasks">0</p>
+      </div>
+    </div>
+
+    <canvas id="taskChart" style="margin-top: 3rem;"></canvas>
+  </section>
+
+  <footer>
+    &copy; 2025 TaskTracker. All rights reserved.
+  </footer>
+
+  <script>
+    // Sample: Fetch tasks from localStorage
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    const total = tasks.length;
+    const completed = tasks.filter(t => t.completed).length;
+    const pending = total - completed;
+
+    document.getElementById("totalTasks").innerText = total;
+    document.getElementById("completedTasks").innerText = completed;
+    document.getElementById("pendingTasks").innerText = pending;
+
+    // Chart.js Pie Chart
+    const ctx = document.getElementById("taskChart").getContext("2d");
+    new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["Completed", "Pending"],
+        datasets: [{
+          data: [completed, pending],
+          backgroundColor: ["#22c55e", "#facc15"],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: "bottom",
+            labels: {
+              color: "#f8fafc",
+              font: { size: 14 }
+            }
+          }
+        }
+      }
+    });
+  </script>
 </body>
 </html>
